@@ -1,40 +1,12 @@
 import java.util.ArrayDeque;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class GameState {
+public class GameState implements State {
 
     private byte[][] state;
     private ArrayDeque<GameState> children;
     private boolean finished;
     private byte winner;
-
-    enum Space {
-        EMPTY(' '), PLAYER('X'), OPPONENT('O');
-
-        private final byte code;
-
-        Space(char code) {
-            this.code = (byte) code;
-        }
-
-        public byte getCode() {
-            return this.code;
-        }
-
-        public static Space valueOf(char c) {
-            switch (c) {
-                case ' ':
-                    return EMPTY;
-                case 'X':
-                    return PLAYER;
-                case 'O':
-                    return OPPONENT;
-                default:
-                    return null;
-            }
-        }
-
-    }
 
     public GameState() {
         this.state = new byte[3][3];
@@ -42,6 +14,7 @@ public class GameState {
 
     }
 
+    @Override
     public void transferState(GameState donor) {
         byte[][] donorData = donor.getState();
         for (int i = 0; i < donorData.length; i++) {
@@ -55,25 +28,29 @@ public class GameState {
         this.children.add(child);
     }
 
+    @Override
     public boolean removeChild(GameState child) {
         assert this.children.contains(child);
 
         return this.children.remove(child);
     }
 
+    @Override
     public GameState[] getChildren() {
         return this.children.toArray(new GameState[0]);
     }
 
+    @Override
     public byte[][] getState() {
         return this.state.clone();
     }
 
-    public void setState(byte[][] newState) {
-        this.state = newState.clone();
+    @Override
+    public void makeMove(int yCoor, int xCoor, byte value) {
+        this.setPosition(yCoor, xCoor, value);
     }
 
-    public void setPosition(int yCoor, int xCoor, byte value) {
+    private void setPosition(int yCoor, int xCoor, byte value) {
         this.state[yCoor][xCoor] = value;
     }
 
@@ -178,6 +155,7 @@ public class GameState {
         return score;
     }
 
+    @Override
     public int getScore() {
         AtomicBoolean throwaway = new AtomicBoolean();
         int score = this.getScore(throwaway);
@@ -201,6 +179,7 @@ public class GameState {
         return toString;
     }
 
+    @Override
     public boolean isFinished() {
         AtomicBoolean isFinished = new AtomicBoolean();
         isFinished.set(false);
@@ -224,9 +203,10 @@ public class GameState {
         return this.finished;
     }
 
-    public Space getWinner() {
+    @Override
+    public State.Space getWinner() {
         assert this.finished;
 
-        return GameState.Space.valueOf((char) this.winner);
+        return State.Space.valueOf((char) this.winner);
     }
 }

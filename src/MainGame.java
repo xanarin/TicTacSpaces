@@ -12,11 +12,9 @@ public class MainGame {
                     child.transferState(root);
                     root.addChild(child);
                     if (playerTurn) {
-                        child.setPosition(i, j,
-                                GameState.Space.PLAYER.getCode());
+                        child.makeMove(i, j, GameState.Space.PLAYER.getCode());
                     } else {
-                        child.setPosition(i, j,
-                                GameState.Space.OPPONENT.getCode());
+                        child.makeMove(i, j, GameState.Space.OPPONENT.getCode());
                     }
 
                     if (!child.isFinished()) {
@@ -81,7 +79,7 @@ public class MainGame {
 
         for (int i = 0; i < emptyState.getState().length; i++) {
             for (int j = 0; j < emptyState.getState()[0].length; j++) {
-                emptyState.setPosition(i, j, GameState.Space.EMPTY.getCode());
+                emptyState.makeMove(i, j, GameState.Space.EMPTY.getCode());
             }
         }
 
