@@ -28,11 +28,13 @@ public abstract interface State {
 
     }
 
-    public abstract void transferState(GameState donor);
+    public abstract void transferState(State donor);
 
-    public abstract boolean removeChild(GameState child);
+    public abstract void addChild(State child);
 
-    public abstract GameState[] getChildren();
+    public abstract boolean removeChild(State child);
+
+    public abstract State[] getChildren();
 
     public abstract byte[][] getState();
 

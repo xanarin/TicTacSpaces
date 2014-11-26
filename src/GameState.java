@@ -15,7 +15,7 @@ public class GameState implements State {
     }
 
     @Override
-    public void transferState(GameState donor) {
+    public void transferState(State donor) {
         byte[][] donorData = donor.getState();
         for (int i = 0; i < donorData.length; i++) {
             for (int j = 0; j < donorData[0].length; j++) {
@@ -24,12 +24,15 @@ public class GameState implements State {
         }
     }
 
-    public void addChild(GameState child) {
-        this.children.add(child);
+    @Override
+    public void addChild(State child) {
+        assert child instanceof GameState;
+
+        this.children.add((GameState) child);
     }
 
     @Override
-    public boolean removeChild(GameState child) {
+    public boolean removeChild(State child) {
         assert this.children.contains(child);
 
         return this.children.remove(child);

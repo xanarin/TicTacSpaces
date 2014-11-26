@@ -2,13 +2,13 @@ import java.util.Scanner;
 
 public class MainGame {
 
-    public static void fillNodes(GameState root, boolean playerTurn) {
+    public static void fillNodes(State root, boolean playerTurn) {
         byte[][] data = root.getState();
 
         for (int i = 0; i < data.length; i++) {
             for (int j = 0; j < data[0].length; j++) {
                 if (data[i][j] == GameState.Space.EMPTY.getCode()) {
-                    GameState child = new GameState();
+                    State child = new GameState();
                     child.transferState(root);
                     root.addChild(child);
                     if (playerTurn) {
@@ -26,22 +26,22 @@ public class MainGame {
 
     }
 
-    public static void printChildren(GameState root) {
+    public static void printChildren(State root) {
         if (root.getChildren().length == 0) {
             System.out.println(root.toString());
         } else {
-            for (GameState waywardSon : root.getChildren()) {
+            for (State waywardSon : root.getChildren()) {
                 printChildren(waywardSon);
             }
         }
     }
 
-    public static int evalMove(GameState root) {
+    public static int evalMove(State root) {
         int bestState = miniMax(root, true);
         return bestState;
     }
 
-    public static int miniMax(GameState root, boolean isPlayer) {
+    public static int miniMax(State root, boolean isPlayer) {
         int bestState = 0;
 
         if (root.getChildren().length == 0) {
@@ -75,7 +75,7 @@ public class MainGame {
         boolean gameFinished = false;
 
         //Generate Game Board
-        GameState emptyState = new GameState();
+        State emptyState = new GameState();
 
         for (int i = 0; i < emptyState.getState().length; i++) {
             for (int j = 0; j < emptyState.getState()[0].length; j++) {
@@ -88,7 +88,7 @@ public class MainGame {
         fillNodes(emptyState, true);
 
         //Aliased variable to keep track of current game state
-        GameState currentState = emptyState;
+        State currentState = emptyState;
 
         //Begin game
         System.out.println("I'll go first.");
@@ -126,7 +126,7 @@ public class MainGame {
             int y = (nextMove - 1) / 3;
             int x = (nextMove - 1) % 3;
 
-            for (GameState child : currentState.getChildren()) {
+            for (State child : currentState.getChildren()) {
                 if (child.getState()[y][x] == GameState.Space.OPPONENT
                         .getCode()) {
                     currentState = child;
