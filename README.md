@@ -1,0 +1,3 @@
+This is a project I was inspired to create after finishing "Mr. Penumbra's 24-Hour Bookstore". Fantastic book, and it deals a great deal with processing large data sets on a distributed cluster (Hadoop). This has inspired me to begin studying this field, and I thought a good first step would be to create an application that could be scaled across a cluster like this. So, I created this Tic Tac Toe game that uses the Minimax algorithm to analyze the state-space and make optimal decisions in the game. 
+
+This project was created in the hope that it could be abstracted to include other games, such as connect-four or even chess.
