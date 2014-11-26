@@ -39,7 +39,37 @@ public class MainGame {
     }
 
     public static int evalMove(GameState root) {
-        return 0;
+        int bestState = miniMax(root, true);
+        return bestState;
+    }
+
+    public static int miniMax(GameState root, boolean isPlayer) {
+        int bestState = 0;
+
+        if (root.getChildren().length == 0) {
+            return 0;
+        }
+
+        if (isPlayer) {
+            int bestScore = miniMax(root.getChildren()[0], false);
+            for (int i = 1; i < root.getChildren().length; i++) {
+                int tempScore = miniMax(root.getChildren()[i], false);
+                if (tempScore > bestScore) {
+                    bestScore = tempScore;
+                    bestState = i;
+                }
+            }
+        } else {
+            int bestScore = miniMax(root.getChildren()[0], false);
+            for (int i = 1; i < root.getChildren().length; i++) {
+                int tempScore = miniMax(root.getChildren()[i], false);
+                if (tempScore < bestScore) {
+                    bestScore = tempScore;
+                    bestState = i;
+                }
+            }
+        }
+        return bestState;
     }
 
     public static void main(String[] args) {
@@ -73,7 +103,6 @@ public class MainGame {
             currentState = currentState.getChildren()[myMove];
 
             System.out.println(currentState);
-            System.out.println("Score: " + currentState.getScore());
 
             if (currentState.isFinished()) { //Check if finished
                 switch (currentState.getWinner()) {
@@ -107,7 +136,6 @@ public class MainGame {
                 }
             }
             System.out.println(currentState);
-            System.out.println("Score: " + currentState.getScore());
 
             if (currentState.isFinished()) { //Check if finished
                 switch (currentState.getWinner()) {

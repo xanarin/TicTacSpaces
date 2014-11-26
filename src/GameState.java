@@ -135,7 +135,7 @@ public class GameState {
         return eval;
     }
 
-    public int getScore(AtomicBoolean finished) {
+    private int getScore(AtomicBoolean finished) {
         int score = 0;
         //Horizontal Summation
         for (int i = 0; i < this.state.length; i++) {
